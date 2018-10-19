@@ -1,6 +1,6 @@
 FROM openjdk:8u171-jre-stretch
 
-LABEL maintainer="Burak Ince <burak.ince@linux.org.tr>"
+LABEL maintainer="Emerald Squad"
 
 ENV SONAR_SCANNER_MSBUILD_VERSION=4.3.1.1372 \
     SONAR_SCANNER_VERSION=3.2.0.1227 \
