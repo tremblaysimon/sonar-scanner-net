@@ -52,4 +52,4 @@ jobs:
   - put: docker-hub
     params:
       load: docker-hub
-tag_as_latest: true
+      tag_as_latest: true
