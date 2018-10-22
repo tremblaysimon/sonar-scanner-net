@@ -2,7 +2,7 @@ resources:
 - name: sonar-scanner-source
   type: git
   source: 
-    uri: https://github.com/emerald-squad/sonar-scanner.git
+    uri: https://github.com/emerald-squad/sonar-scanner-dotnet.git
     branch: 'master'
     ignore_paths:
     - README.md
@@ -13,7 +13,7 @@ resources:
   type: semver
   source: 
     driver: git
-    uri: git@github.com:emerald-squad/sonar-scanner.git
+    uri: git@github.com:emerald-squad/sonar-scanner-dotnet.git
     branch: 'master'
     file: VERSION
     private_key: ((github-key))
@@ -22,7 +22,7 @@ resources:
 - name: docker-hub
   type: docker-image
   source:
-    repository: emeraldsquad/sonar-scanner
+    repository: emeraldsquad/sonar-scanner-net
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
@@ -33,7 +33,7 @@ jobs:
     trigger: true
   - put: version
     params:
-      bump: patch
+      bump: major
   - put: docker-hub
     params:
       build: sonar-scanner-source
