@@ -27,8 +27,6 @@ RUN set -x \
     mono-xsp4 \
     wget \
     unzip \
-    nodejs \
-    build-essential \
     -y \
   && curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg \
   && mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg \
@@ -45,5 +43,9 @@ RUN wget https://github.com/SonarSource/sonar-scanner-msbuild/releases/download/
   && chmod 775 $SONAR_SCANNER_MSBUILD_HOME/*.exe \
   && chmod 775 $SONAR_SCANNER_MSBUILD_HOME/**/bin/* \
   && chmod 775 $SONAR_SCANNER_MSBUILD_HOME/**/lib/*.jar
+  
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
+  && apt-get install -y nodejs \
+  && apt-get install -y build-essential
 
 ENV PATH="$SONAR_SCANNER_MSBUILD_HOME:$SONAR_SCANNER_MSBUILD_HOME/sonar-scanner-$SONAR_SCANNER_VERSION/bin:${PATH}"
