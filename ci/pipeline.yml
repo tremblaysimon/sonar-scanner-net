@@ -33,7 +33,7 @@ jobs:
     trigger: true
   - put: version
     params:
-      bump: major
+      bump: patch
   - put: docker-hub
     params:
       build: sonar-scanner-source
