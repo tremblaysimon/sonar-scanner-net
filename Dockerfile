@@ -18,7 +18,6 @@ RUN set -x \
     libunwind8 \
     gettext \
     apt-transport-https \
-    referenceassemblies-pcl \
     wget \
     unzip \
     -y \
