@@ -5,7 +5,6 @@ LABEL maintainer="Emerald Squad"
 ENV SONAR_SCANNER_MSBUILD_VERSION=4.3.1.1372 \
     SONAR_SCANNER_VERSION=3.2.0.1227 \
     DOTNET_SDK_VERSION=2.1 \
-    MONO_DEBIAN_VERSION=5.14.0.177-0xamarin3+debian9b1 \
     NODE_JS_VERSION=8.x \
     SONAR_SCANNER_MSBUILD_HOME=/opt/sonar-scanner-msbuild \
     DOTNET_PROJECT_DIR=/project \
@@ -13,18 +12,13 @@ ENV SONAR_SCANNER_MSBUILD_VERSION=4.3.1.1372 \
     DOTNET_CLI_TELEMETRY_OPTOUT=true
 
 RUN set -x \
-  && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF \
-  && echo "deb http://download.mono-project.com/repo/debian stable-stretch main" | tee /etc/apt/sources.list.d/mono-official-stable.list \
   && apt-get update \
   && apt-get install \
     curl \
     libunwind8 \
     gettext \
     apt-transport-https \
-    mono-complete \
-    ca-certificates-mono \
     referenceassemblies-pcl \
-    mono-xsp4 \
     wget \
     unzip \
     -y \
