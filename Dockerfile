@@ -29,7 +29,7 @@ RUN set -x \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-RUN dotnet tool install --tool-path $SONAR_SCANNER_MSBUILD_HOME \
+RUN dotnet tool install --tool-path $SONAR_SCANNER_MSBUILD_HOME dotnet-sonarscanner \
   && mkdir -p $DOTNET_PROJECT_DIR \
   && chmod 775 $SONAR_SCANNER_MSBUILD_HOME/*.exe
 
