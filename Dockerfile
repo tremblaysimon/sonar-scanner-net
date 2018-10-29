@@ -30,7 +30,8 @@ RUN set -x \
   && rm -rf /var/lib/apt/lists/*
 
 RUN dotnet tool install dotnet-sonarscanner --tool-path $SONAR_SCANNER_MSBUILD_HOME
-RUN mkdir -p $DOTNET_PROJECT_DIR \
+
+RUN mkdir -p $DOTNET_PROJECT_DIR
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
   && apt-get install -y nodejs \
