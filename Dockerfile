@@ -28,17 +28,13 @@ RUN set -x \
   && apt-get install dotnet-sdk-$DOTNET_SDK_VERSION -y \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
-RUN wget https://github.com/SonarSource/sonar-scanner-msbuild/releases/download/$SONAR_SCANNER_MSBUILD_VERSION/sonar-scanner-msbuild-$SONAR_SCANNER_MSBUILD_VERSION-net46.zip -O /opt/sonar-scanner-msbuild.zip \
-  && mkdir -p $SONAR_SCANNER_MSBUILD_HOME \
+
+RUN dotnet tool install --tool-path $SONAR_SCANNER_MSBUILD_HOME \
   && mkdir -p $DOTNET_PROJECT_DIR \
-  && unzip /opt/sonar-scanner-msbuild.zip -d $SONAR_SCANNER_MSBUILD_HOME \
-  && rm /opt/sonar-scanner-msbuild.zip \
-  && chmod 775 $SONAR_SCANNER_MSBUILD_HOME/*.exe \
-  && chmod 775 $SONAR_SCANNER_MSBUILD_HOME/**/bin/* \
-  && chmod 775 $SONAR_SCANNER_MSBUILD_HOME/**/lib/*.jar
-  
+  && chmod 775 $SONAR_SCANNER_MSBUILD_HOME/*.exe
+
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
   && apt-get install -y nodejs \
   && apt-get install -y build-essential
 
-ENV PATH="$SONAR_SCANNER_MSBUILD_HOME:$SONAR_SCANNER_MSBUILD_HOME/sonar-scanner-$SONAR_SCANNER_VERSION/bin:${PATH}"
+ENV PATH="$SONAR_SCANNER_MSBUILD_HOME:${PATH}"
