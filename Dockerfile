@@ -1,11 +1,11 @@
 FROM openjdk:8u171-jre-stretch
 
 LABEL maintainer="Emerald Squad"
+LABEL github="https://github.com/emerald-squad/sonar-scanner-net"
 
 ENV SONAR_SCANNER_MSBUILD_VERSION=4.3.1.1372 \
     SONAR_SCANNER_VERSION=3.2.0.1227 \
-    DOTNET_SDK_VERSION=2.1 \
-    NODE_JS_VERSION=8.x \
+    DOTNET_SDK_VERSION=2.2 \
     SONAR_SCANNER_MSBUILD_HOME=/opt/sonar-scanner-msbuild \
     DOTNET_PROJECT_DIR=/project \
     DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true \
@@ -14,15 +14,14 @@ ENV SONAR_SCANNER_MSBUILD_VERSION=4.3.1.1372 \
 RUN set -x \
   && apt-get update \
   && apt-get install \
-    curl \
     libunwind8 \
     gettext \
     apt-transport-https \
     wget \
     unzip \
     -y \
-  && curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg \
-  && mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg \
+  && wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.asc.gpg \
+  && mv microsoft.asc.gpg /etc/apt/trusted.gpg.d/ \
   && sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/debian/9/prod stretch main" > /etc/apt/sources.list.d/microsoft-prod.list' \
   && apt-get update \
   && apt-get install dotnet-sdk-$DOTNET_SDK_VERSION -y \
@@ -32,9 +31,5 @@ RUN set -x \
 RUN dotnet tool install dotnet-sonarscanner --tool-path $SONAR_SCANNER_MSBUILD_HOME
 
 RUN mkdir -p $DOTNET_PROJECT_DIR
-
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
-  && apt-get install -y nodejs \
-  && apt-get install -y build-essential
 
 ENV PATH="$SONAR_SCANNER_MSBUILD_HOME:${PATH}"

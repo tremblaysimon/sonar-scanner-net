@@ -2,7 +2,7 @@ resources:
 - name: sonar-scanner-source
   type: git
   source: 
-    uri: https://github.com/emerald-squad/sonar-scanner-dotnet.git
+    uri: https://github.com/emerald-squad/sonar-scanner-net.git
     branch: 'master'
     ignore_paths:
     - README.md
@@ -13,7 +13,7 @@ resources:
   type: semver
   source: 
     driver: git
-    uri: git@github.com:emerald-squad/sonar-scanner-dotnet.git
+    uri: git@github.com:emerald-squad/sonar-scanner-net.git
     branch: 'master'
     file: VERSION
     private_key: ((github-key))

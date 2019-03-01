@@ -1,4 +1,4 @@
-# sonar-scanner-dotnet
+# sonar-scanner-net
 
 Docker image to run Sonar Scanner in a .Net/Javascript environment
 
