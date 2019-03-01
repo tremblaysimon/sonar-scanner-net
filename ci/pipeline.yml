@@ -26,30 +26,142 @@ resources:
     username: ((docker-hub-username))
     password: ((docker-hub-password))
 
+- name: manual-trigger-resource-major
+  type: time
+  check_every: 24h
+  source:
+    interval: 87600h
+    
+- name: manual-trigger-resource-minor
+  type: time
+  check_every: 24h
+  source:
+    interval: 87600h
+    
+- name: manual-trigger-resource-patch
+  type: time
+  check_every: 24h
+  source:
+    interval: 87600h
+
 jobs:
-- name: publish
+- name: manual-trigger-major
   plan:
-  - get: sonar-scanner-source
+  - put: manual-trigger-resource-major
+
+- name: publish-major-rc
+  plan:
+  - get: manual-trigger-resource-major
     trigger: true
+  - get: sonar-scanner-source
   - put: version
     params:
-      bump: patch
+      bump: major
+      pre: rc
   - put: docker-hub
     params:
       build: sonar-scanner-source
-      tag: version/version
+      tag_file: version/version
       tag_as_latest: false
 
-- name: tag-as-latest
+- name: tag-major-as-final-latest
   plan:
-  - aggregate:
-    - get: sonar-scanner-source
-      passed: [ publish ]
-    - get: docker-hub
-      passed: [ publish ]
-      params:
-        save: true
+  - get: docker-hub
+    passed: [ publish-major-rc ]
+    params:
+      save: true
+  - put: version
+    params:
+      bump: final
   - put: docker-hub
     params:
       load: docker-hub
+      tag_file: version/version
       tag_as_latest: true
+
+- name: manual-trigger-minor
+  plan:
+  - put: manual-trigger-resource-minor
+
+- name: publish-minor-rc
+  plan:
+  - get: manual-trigger-resource-minor
+    trigger: true
+  - get: sonar-scanner-source
+  - put: version
+    params:
+      bump: minor
+      pre: rc
+  - put: docker-hub
+    params:
+      build: sonar-scanner-source
+      tag_file: version/version
+      tag_as_latest: false
+
+- name: tag-minor-as-final-latest
+  plan:
+  - get: docker-hub
+    passed: [ publish-minor-rc ]
+    params:
+      save: true
+  - put: version
+    params:
+      bump: final
+  - put: docker-hub
+    params:
+      load: docker-hub
+      tag_file: version/version
+      tag_as_latest: true
+
+- name: manual-trigger-patch
+  plan:
+  - put: manual-trigger-resource-patch
+
+- name: publish-patch-rc
+  plan:
+  - get: manual-trigger-resource-patch
+    trigger: true
+  - get: sonar-scanner-source
+  - put: version
+    params:
+      bump: patch
+      pre: rc
+  - put: docker-hub
+    params:
+      build: sonar-scanner-source
+      tag_file: version/version
+      tag_as_latest: false
+
+- name: tag-patch-as-final-latest
+  plan:
+  - get: docker-hub
+    passed: [ publish-patch-rc ]
+    params:
+      save: true
+  - put: version
+    params:
+      bump: final
+  - put: docker-hub
+    params:
+      load: docker-hub
+      tag_file: version/version
+      tag_as_latest: true
+
+groups:
+- name: major
+  jobs:
+  - manual-trigger-major
+  - publish-major-rc
+  - tag-major-as-final-latest
+
+- name: minor
+  jobs:
+  - manual-trigger-minor
+  - publish-minor-rc
+  - tag-minor-as-final-latest
+
+- name: patch
+  jobs:
+  - manual-trigger-patch
+  - publish-patch-rc
+  - tag-patch-as-final-latest
