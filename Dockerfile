@@ -4,7 +4,7 @@ LABEL maintainer="Emerald Squad"
 LABEL github="https://github.com/emerald-squad/sonar-scanner-net"
 
 ENV SONAR_SCANNER_MSBUILD_VERSION=4.8.0.12008 \
-    DOTNET_SDK_VERSION=3.0 \
+    DOTNET_SDK_VERSION=3.1 \
     SONAR_SCANNER_MSBUILD_HOME=/opt/sonar-scanner-msbuild \
     DOTNET_PROJECT_DIR=/project \
     DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true \
