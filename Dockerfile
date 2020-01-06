@@ -1,11 +1,10 @@
-FROM openjdk:8u171-jre-stretch
+FROM openjdk:8u232-jre-stretch
 
 LABEL maintainer="Emerald Squad"
 LABEL github="https://github.com/emerald-squad/sonar-scanner-net"
 
-ENV SONAR_SCANNER_MSBUILD_VERSION=4.3.1.1372 \
-    SONAR_SCANNER_VERSION=3.2.0.1227 \
-    DOTNET_SDK_VERSION=2.2 \
+ENV SONAR_SCANNER_MSBUILD_VERSION=4.8.0.12008 \
+    DOTNET_SDK_VERSION=3.1 \
     SONAR_SCANNER_MSBUILD_HOME=/opt/sonar-scanner-msbuild \
     DOTNET_PROJECT_DIR=/project \
     DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true \
@@ -14,11 +13,8 @@ ENV SONAR_SCANNER_MSBUILD_VERSION=4.3.1.1372 \
 RUN set -x \
   && apt-get update \
   && apt-get install \
-    libunwind8 \
-    gettext \
     apt-transport-https \
     wget \
-    unzip \
     -y \
   && wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.asc.gpg \
   && mv microsoft.asc.gpg /etc/apt/trusted.gpg.d/ \
